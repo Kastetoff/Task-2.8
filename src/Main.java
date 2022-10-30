@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
         List<Person> peoples = new ArrayList<>();
@@ -14,10 +14,20 @@ public class Main {
         peoples.add(new Person("Константин", "Петров-Иванов-Смирнов", 20));
         peoples.add(new Person("Сергей", "Алексеев-Попов", 25));
 
-
         System.out.println(peoples);
 
-        Collections.sort(peoples, new PersonNameLengthComparator(2));
+        Comparator<Person> comparator = (Person o1, Person o2) -> {
+            int maxWordsOfSurname = 2;
+            int qtyWords1 = o1.getSurName().split("-").length;
+            int qtyWords2 = o2.getSurName().split("-").length;
+
+            if (qtyWords1 == qtyWords2 || qtyWords1 > maxWordsOfSurname || qtyWords2 > maxWordsOfSurname) {
+                return Integer.compare(o2.getAge(), o1.getAge());
+            } else {
+                return Integer.compare(qtyWords2, qtyWords1);
+            }
+        };
+        Collections.sort(peoples, comparator);
         System.out.println(peoples);
     }
 }
